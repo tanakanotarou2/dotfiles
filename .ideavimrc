@@ -1,0 +1,7 @@
+set clipboard=unnamed
+
+set expandtab
+set ignorecase
+set smartcase
+inoremap <C-d> <Del>
+set number

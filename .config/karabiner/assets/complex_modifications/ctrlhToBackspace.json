@@ -1,0 +1,18 @@
+{
+    "title": "ctrl+h to backspace",
+    "rules": [
+        {
+            "description": "ctrl+h to backspace",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": { "key_code": "h", "modifiers": { "mandatory": ["left_control"] } },
+                    "to": [ { "key_code": "delete_or_backspace" } ],
+                    "conditions": [ { "type": "frontmost_application_if", "bundle_identifiers": ["^com\\.google\\.Chrome$", "^com\\.jetbrains\\..*$","^com\\.jetbrains\\..*$", "^com\\.adobe\\.illustrator$" ] } ] }
+            ]
+        }
+    ]
+}
+
+
+
