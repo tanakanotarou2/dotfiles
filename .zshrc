@@ -21,6 +21,7 @@ eval "$(rbenv init -)"
 
 
 # del command
+# https://github.com/andreafrancia/trash-cli
 # 削除の代わりにゴミ箱に移動する
 if which trash-put &>/dev/null; then
     alias del=trash-put
@@ -33,7 +34,6 @@ alias cp="cp -r"
 
 
 # history
-#
 # メモリに保存される履歴の件数
 export HISTSIZE=1000
 # 履歴ファイルに保存される履歴の件数
