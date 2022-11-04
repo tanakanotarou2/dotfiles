@@ -32,6 +32,9 @@ fi
 alias ll="ls -la"
 alias cp="cp -r"
 
+if which nvim &>/dev/null; then
+    alias vim="nvim"
+fi
 
 # history
 # メモリに保存される履歴の件数
