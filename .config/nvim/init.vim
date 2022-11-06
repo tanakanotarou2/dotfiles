@@ -30,9 +30,13 @@ call dein#add('Shougo/ddc-sorter_rank') " 補完候補を適切にソートす�
 call dein#add('Shougo/ddc-converter_remove_overlap') " 補完候補の重複を防ぐためのfilter
 
 " LSP
-call dein#add('prabirshrestha/vim-lsp')
-call dein#add('mattn/vim-lsp-settings')
-call dein#add('Shougo/ddc-source-nvim-lsp')
+
+" call dein#add('prabirshrestha/vim-lsp')
+" call dein#add('mattn/vim-lsp-settings')
+" call dein#add('neovim/nvim-lspconfig')
+" call dein#add('williamboman/mason.nvim')
+" call dein#add('williamboman/mason-lspconfig.nvim')
+" call dein#add('folke/lsp-colors.nvim')
 
 " call dein#add('Shougo/neosnippet.vim')
 " call dein#add('Shougo/neosnippet-snippets')
@@ -196,9 +200,15 @@ set pumblend=10 " pop-up menu が半透明になる
 set termguicolors
 
 " 背景透明にする(colorschema 指定後にセットすること)
-highlight Normal ctermbg=none guibg=NONE
-highlight NonText ctermbg=none guibg=NONE
-highlight LineNr ctermbg=none guibg=NONE
-highlight Folded ctermbg=none guibg=NONE
-highlight EndOfBuffer ctermbg=none guibg=NONE
+" highlight Normal ctermbg=none guibg=NONE
+" highlight NonText ctermbg=none guibg=NONE
+" highlight LineNr ctermbg=none guibg=NONE
+" highlight Folded ctermbg=none guibg=NONE
+" highlight EndOfBuffer ctermbg=none guibg=NONE
 
+
+
+hi DiagnosticError guifg=Red
+hi DiagnosticWarn  guifg=DarkOrange
+hi DiagnosticInfo  guifg=Blue
+hi DiagnosticHint  guifg=Green

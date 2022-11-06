@@ -19,6 +19,11 @@ eval "$(rbenv init -)"
 [ -f $HOME/.venv/global/bin/activate ] && \
     source ~/.venv/global/bin/activate
 
+# deno
+[ -d $HOME/.deno ] && \
+export DENO_INSTALL="${HOME}/.deno" && \
+export PATH="$DENO_INSTALL/bin:$PATH"
+
 
 # del command
 # https://github.com/andreafrancia/trash-cli
