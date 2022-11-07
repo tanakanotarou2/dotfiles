@@ -1,33 +1,42 @@
-if &compatible
-  set nocompatible " Be iMproved
-endif
+call plug#begin()
 
-" Required:
-" Add the dein installation directory into runtimepath
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
-
-" Required:
-call dein#begin('~/.cache/nvim/dein')
-
-" Let dein manage dein
-call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
-if !has('nvim')
-  call dein#add('roxma/nvim-yarp')
-  call dein#add('roxma/vim-hug-neovim-rpc')
-endif
-
-" Add or remove your plugins here like this:
-call dein#add('Shougo/ddc.vim') " 補完
-call dein#add('vim-denops/denops.vim') " Deno 
-call dein#add('Shougo/pum.vim') " popup 表示
-call dein#add('Shougo/ddc-ui-pum')
-
+" LSP
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'matsui54/denops-signature_help'
+Plug 'matsui54/denops-popup-preview.vim'
+ 
 " ddc
-call dein#add('Shougo/ddc-around') " カーソル周辺の既出単語を補完
-call dein#add('Shougo/ddc-source-nextword')
-call dein#add('Shougo/ddc-matcher_head') " 入力中の単語を補完の対象にするfilter
-call dein#add('Shougo/ddc-sorter_rank') " 補完候補を適切にソートするfilter
-call dein#add('Shougo/ddc-converter_remove_overlap') " 補完候補の重複を防ぐためのfilter
+Plug 'Shougo/ddc.vim' " 補完
+Plug 'vim-denops/denops.vim' " Deno 
+Plug 'Shougo/pum.vim' " popup 表示
+Plug 'Shougo/ddc-ui-pum'
+Plug 'Shougo/ddc-around' " カーソル周辺の既出単語を補完
+Plug 'Shougo/ddc-source-nextword'
+Plug 'Shougo/ddc-matcher_head' " 入力中の単語を補完の対象にするfilter
+Plug 'Shougo/ddc-sorter_rank' " 補完候補を適切にソートするfilter
+Plug 'Shougo/ddc-converter_remove_overlap' " 補完候補の重複を防ぐためのfilter
+Plug 'Shougo/ddc-source-nvim-lsp'
+
+
+Plug 'tpope/vim-commentary' " コメントアウト
+Plug 'kana/vim-textobj-entire' " 全体を選択するモーション ae,ie
+Plug 'kana/vim-textobj-user' " (vim-textobj-entire に必要)
+
+call plug#end()
+" " Add or remove your plugins here like this:
+" call dein#add('Shougo/ddc.vim') " 補完
+" call dein#add('vim-denops/denops.vim') " Deno 
+" call dein#add('Shougo/pum.vim') " popup 表示
+" call dein#add('Shougo/ddc-ui-pum')
+" 
+" " ddc
+" call dein#add('Shougo/ddc-around') " カーソル周辺の既出単語を補完
+" call dein#add('Shougo/ddc-source-nextword')
+" call dein#add('Shougo/ddc-matcher_head') " 入力中の単語を補完の対象にするfilter
+" call dein#add('Shougo/ddc-sorter_rank') " 補完候補を適切にソートするfilter
+" call dein#add('Shougo/ddc-converter_remove_overlap') " 補完候補の重複を防ぐためのfilter
 
 " LSP
 
@@ -41,24 +50,78 @@ call dein#add('Shougo/ddc-converter_remove_overlap') " 補完候補の重複を�
 " call dein#add('Shougo/neosnippet.vim')
 " call dein#add('Shougo/neosnippet-snippets')
 
-
 " Required:
-call dein#end()
-
-" Required:
-filetype plugin indent on
+" filetype plugin indent on
 syntax enable
 
 
-" If you want to install not installed plugins on startup.
-if dein#check_install()
- call dein#install()
-endif
+" ここのコピペ
+" https://zenn.dev/kawarimidoll/scraps/b1e5b44d304704
+lua << EOF
+local mason = require('mason')
+mason.setup({
+  ui = {
+    icons = {
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗"
+    }
+  }
+})
 
-" コメントアウトしたプラグインを削除できるようにする (https://taaiyoo.hateblo.jp/entry/2019/08/04/163036)
-if len(dein#check_clean()) != 0
-  call map(dein#check_clean(), "delete(v:val, 'rf')")
-endif
+local nvim_lsp = require('lspconfig')
+local mason_lspconfig = require('mason-lspconfig')
+mason_lspconfig.setup_handlers({ function(server_name)
+-----------------------
+-- Mappings.
+-----------------------
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+-- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+  end
+
+  -- 言語ごとに設定分けたりもできるっぽい?
+  -- https://github.com/neovim/nvim-lspconfig#suggested-configuration
+  opts.on_attach=on_attach
+
+
+  nvim_lsp[server_name].setup(opts)
+end })
+EOF
+
+" -- local nvim_lsp = require('lspconfig')
+" -- local mason_lspconfig = require('mason-lspconfig')
+" -- mason_lspconfig.setup_handlers({ function(server_name)
+" --   local opts = {}
+" --   opts.on_attach = function(_, bufnr)
+" --     local bufopts = { silent = true, buffer = bufnr }
+" --     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+" --     vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+" --     vim.keymap.set('n', 'gtD', vim.lsp.buf.type_definition, bufopts)
+" --     vim.keymap.set('n', 'grf', vim.lsp.buf.references, bufopts)
+" --     vim.keymap.set('n', '<space>p', vim.lsp.buf.format, bufopts)
+" --  end
+" --   nvim_lsp[server_name].setup(opts)
+" -- end })
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -100,14 +163,9 @@ inoremap <C-p>   <Cmd>call pum#map#select_relative(-1)<CR>
 inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
 inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
 
-" エラーの表示設定
-" https://qiita.com/kitagry/items/216c2cf0066ff046d200#lspdocumentdiagnostics
-let g:lsp_signs_enabled = 1
-"let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_diagnostics_float_cursor = 1
-
-" TODO: 反映されない.よくわからず.
-let g:lsp_signs_error = {'text': '✗'}
+" LSP
+call popup_preview#enable()
+call signature_help#enable()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 設定いろいろ
@@ -185,7 +243,6 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 nnoremap / /\v
 " アクティブなファイルのディレクトリを展開
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
-
 " アクティブファイルパスを表示
 command! Pwf echo expand('%:p')
 
@@ -200,15 +257,9 @@ set pumblend=10 " pop-up menu が半透明になる
 set termguicolors
 
 " 背景透明にする(colorschema 指定後にセットすること)
-" highlight Normal ctermbg=none guibg=NONE
-" highlight NonText ctermbg=none guibg=NONE
-" highlight LineNr ctermbg=none guibg=NONE
-" highlight Folded ctermbg=none guibg=NONE
-" highlight EndOfBuffer ctermbg=none guibg=NONE
+highlight Normal ctermbg=none guibg=NONE
+highlight NonText ctermbg=none guibg=NONE
+highlight LineNr ctermbg=none guibg=NONE
+highlight Folded ctermbg=none guibg=NONE
+highlight EndOfBuffer ctermbg=none guibg=NONE
 
-
-
-hi DiagnosticError guifg=Red
-hi DiagnosticWarn  guifg=DarkOrange
-hi DiagnosticInfo  guifg=Blue
-hi DiagnosticHint  guifg=Green
