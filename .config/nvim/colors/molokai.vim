@@ -155,7 +155,7 @@ if &t_Co > 255
    hi Cursor          ctermfg=16  ctermbg=253
    hi Debug           ctermfg=225               cterm=bold
    hi Define          ctermfg=81
-   hi Delimiter       ctermfg=241
+   hi Delimiter       ctermfg=248
 
    hi DiffAdd                     ctermbg=24
    hi DiffChange      ctermfg=181 ctermbg=239
@@ -226,13 +226,13 @@ if &t_Co > 255
    hi WarningMsg      ctermfg=231 ctermbg=238   cterm=bold
    hi WildMenu        ctermfg=81  ctermbg=16
 
-   hi Comment         ctermfg=59
+   hi Comment         ctermfg=103
    hi CursorColumn                ctermbg=236
    hi ColorColumn                 ctermbg=236
    hi LineNr          ctermfg=250 ctermbg=236
-   hi NonText         ctermfg=59
+   hi NonText         ctermfg=146
 
-   hi SpecialKey      ctermfg=59
+   hi SpecialKey      ctermfg=146
 
    if exists("g:rehash256") && g:rehash256 == 1
        hi Normal       ctermfg=252 ctermbg=234

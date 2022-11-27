@@ -97,6 +97,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
   end
 
   -- 言語ごとに設定分けたりもできるっぽい?
@@ -182,15 +183,9 @@ set smartcase
 set hls
 " 加減算10進強制
 set nrformats=
-
-"indent, eolをbackspaceで削除可に
-set backspace=2
-
-"インクリメンタルサーチ有効 
-set incsearch
-
-"バッファ切り替え時警告しない
-set hidden
+set backspace=2 "indent, eolをbackspaceで削除可に
+set incsearch "インクリメンタルサーチ有効 
+set hidden "バッファ切り替え時警告しない
 
 " tmp files 
 set directory=~/.vim/tmp
@@ -219,12 +214,15 @@ nnoremap k gk
 nnoremap gj j
 nnoremap gk k
 
+" コマンドラインのマッピング。p, n でフィルタリングをした履歴をたどる
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+
 " 引数リスト移動
 nnoremap <silent> [a :previous!<CR>
 nnoremap <silent> ]a :next!<CR>
 nnoremap <silent> [A :first!<CR>
 nnoremap <silent> ]A :last!<CR>
-
 " バッファリスト移動
 nnoremap <silent> [b :bprevious!<CR>
 nnoremap <silent> ]b :bnext!<CR>
@@ -238,10 +236,9 @@ nnoremap <silent> ]C :clast!<CR>
 
 " ctrl-l で検索ハイライトを消す
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
-
 " 検索very magicをデフォルトに
 nnoremap / /\v
-" アクティブなファイルのディレクトリを展開
+" %% でアクティブなファイルのディレクトリを展開(実践vim p.136)
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 " アクティブファイルパスを表示
 command! Pwf echo expand('%:p')
@@ -250,11 +247,9 @@ command! Pwf echo expand('%:p')
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 " color 設定
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-" colorscheme desert256
-" colorscheme ambient
 colorscheme molokai
-set pumblend=10 " pop-up menu が半透明になる
 set termguicolors
+"set pumblend=10 " pop-up menu が半透明になる
 
 " 背景透明にする(colorschema 指定後にセットすること)
 highlight Normal ctermbg=none guibg=NONE
@@ -262,4 +257,3 @@ highlight NonText ctermbg=none guibg=NONE
 highlight LineNr ctermbg=none guibg=NONE
 highlight Folded ctermbg=none guibg=NONE
 highlight EndOfBuffer ctermbg=none guibg=NONE
-
