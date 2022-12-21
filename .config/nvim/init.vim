@@ -18,9 +18,10 @@ Plug 'Shougo/ddc-matcher_head' " 入力中の単語を補完の対象にするfi
 Plug 'Shougo/ddc-sorter_rank' " 補完候補を適切にソートするfilter
 Plug 'Shougo/ddc-converter_remove_overlap' " 補完候補の重複を防ぐためのfilter
 Plug 'Shougo/ddc-source-nvim-lsp'
+Plug 'mattn/vim-sonictemplate' " テンプレート
 
 
-Plug 'tpope/vim-commentary' " コメントアウト
+Plug 'tpope/vim-commentary' " gcc, gc でコメントアウト
 Plug 'kana/vim-textobj-entire' " 全体を選択するモーション ae,ie
 Plug 'kana/vim-textobj-user' " (vim-textobj-entire に必要)
 
@@ -205,6 +206,11 @@ set modeline
 " 3行目までをモードラインとして検索する
 set modelines=3
 
+" sonictemplate.vim templateの配置パス
+let g:sonictemplate_vim_template_dir = [
+\ '$HOME/.vim/template'
+\]
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 " キーマップ 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -257,3 +263,5 @@ highlight NonText ctermbg=none guibg=NONE
 highlight LineNr ctermbg=none guibg=NONE
 highlight Folded ctermbg=none guibg=NONE
 highlight EndOfBuffer ctermbg=none guibg=NONE
+
+
